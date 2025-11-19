@@ -1,4 +1,4 @@
-module github.com/diegobbrito/MagicStream
+module github.com/diegobbrito/MagicStream/Server/MagicStreamServer
 
 go 1.25.4
 

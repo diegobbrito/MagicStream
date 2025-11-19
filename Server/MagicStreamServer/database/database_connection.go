@@ -1,13 +1,16 @@
 package database
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
 )
 
 func DBInstance() *mongo.Client {
@@ -16,20 +19,31 @@ func DBInstance() *mongo.Client {
 		log.Println("Warning: unable to find .env file")
 	}
 
-	MongoDb := os.Getenv("MONGODB_URI")
+	mongoURI := os.Getenv("MONGODB_URI")
 
-	if MongoDb == "" {
+	if mongoURI == "" {
 		log.Fatal("MONGODB_URI not set in .env file")
 	}
 
-	fmt.Println("MongoDB URI:", MongoDb)
+	fmt.Println("MongoDB URI:", mongoURI)
 
-	clientOptions := options.Client().ApplyURI(MongoDb)
+	clientOptions := options.Client().ApplyURI(mongoURI)
+
 	client, err := mongo.Connect(clientOptions)
 	if err != nil {
+		log.Fatalf("mongo.Connect error: %v", err)
 		return nil
 	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := client.Ping(ctx, readpref.Primary()); err != nil {
+		log.Fatalf("unable to ping MongoDB (auth/connect): %v", err)
+		return nil
+	}
+
+	fmt.Println("Connected to MongoDB")
 	return client
 }
 

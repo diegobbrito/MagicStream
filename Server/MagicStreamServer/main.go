@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"log"
+	"os"
 
 	controller "github.com/diegobbrito/MagicStream/Server/MagicStreamServer/controllers"
 	"github.com/gin-gonic/gin"
@@ -19,8 +19,14 @@ func main() {
 
 	router.GET("/movies", controller.GetMovies())
 	router.GET("/movies/:imdb_id", controller.GetMovie())
+	router.POST("/movies", controller.AddMovie())
 
-	if err := router.Run(":8080"); err != nil {
-		fmt.Println("Failed to start server", err)
+	PORT := os.Getenv("PORT")
+	if PORT == "" {
+		PORT = "8080"
+	}
+
+	if err := router.Run(":" + PORT); err != nil {
+		log.Fatal("Failed to start server", err)
 	}
 }

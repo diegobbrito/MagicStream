@@ -21,6 +21,8 @@ func main() {
 	router.GET("/movies/:imdb_id", controller.GetMovie())
 	router.POST("/movies", controller.AddMovie())
 
+	router.POST("/register", controller.RegisterUser())
+
 	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = "8080"

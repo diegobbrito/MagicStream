@@ -7,6 +7,7 @@ import (
 
 	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/database"
 	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/models"
+	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -100,6 +101,31 @@ func LoginUser() gin.HandlerFunc {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid email or password"})
 			return
 		}
+
+		token, refreshToken, err := utils.GenerateAllTokens(foundUser.Email, foundUser.FirstName, foundUser.LastName, foundUser.Role, foundUser.UserID)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error generating tokens"})
+			return
+		}
+
+		err = utils.UpdateAllTokens(foundUser.UserID, token, refreshToken)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating tokens"})
+			return
+		}
+
+		c.JSON(http.StatusOK, models.UserResponse{
+			UserID:          foundUser.UserID,
+			FirstName:       foundUser.FirstName,
+			LastName:        foundUser.LastName,
+			Email:           foundUser.Email,
+			Role:            foundUser.Role,
+			Token:           token,
+			RefreshToken:    refreshToken,
+			FavouriteGenres: foundUser.FavouriteGenres,
+		})
 
 	}
 }

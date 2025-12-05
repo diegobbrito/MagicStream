@@ -22,6 +22,7 @@ func main() {
 	router.POST("/movies", controller.AddMovie())
 
 	router.POST("/register", controller.RegisterUser())
+	router.POST("/login", controller.LoginUser())
 
 	PORT := os.Getenv("PORT")
 	if PORT == "" {

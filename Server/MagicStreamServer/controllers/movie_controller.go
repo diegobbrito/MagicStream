@@ -15,6 +15,8 @@ import (
 )
 
 var movieCollection *mongo.Collection = database.OpenCollection("movies")
+var rankingCollection *mongo.Collection = database.OpenCollection("rankings")
+
 var validate = validator.New()
 
 func GetMovies() gin.HandlerFunc {
@@ -98,4 +100,25 @@ func AddMovie() gin.HandlerFunc {
 
 		c.JSON(http.StatusCreated, result)
 	}
+}
+
+func GetRankings() ([]models.Ranking, error) {
+	var rankings []models.Ranking
+
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	cursor, err := rankingCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer cursor.Close(ctx)
+
+	if err := cursor.All(ctx, &rankings); err != nil {
+		return nil, err
+	}
+
+	return rankings, nil
 }

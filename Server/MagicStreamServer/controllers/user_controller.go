@@ -42,6 +42,11 @@ func RegisterUser() gin.HandlerFunc {
 
 		hashedPassword, err := HashPassword(user.Password)
 
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error hashing password"})
+			return
+		}
+
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 		defer cancel()

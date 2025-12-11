@@ -131,3 +131,17 @@ func ValidateToken(tokenString string) (*SignedDetails, error) {
 
 	return claims, nil
 }
+
+func GetUserIdFromContext(c *gin.Context) (string, error) {
+	userId, exists := c.Get("user_id")
+	if !exists {
+		return "", errors.New("userI not found in context")
+	}
+
+	id, ok := userId.(string)
+	if !ok {
+		return "", errors.New("userID is not a string")
+	}
+
+	return id, nil
+}

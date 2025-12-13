@@ -6,17 +6,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/database"
 	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/models"
+	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"github.com/tmc/langchaingo/llms/openai"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 var movieCollection *mongo.Collection = database.OpenCollection("movies")
@@ -250,4 +253,102 @@ func GetRankings() ([]models.Ranking, error) {
 	}
 
 	return rankings, nil
+}
+
+func GetRecommendedMovies() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userId, err := utils.GetUserIdFromContext(c)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "User ID not found"})
+			return
+		}
+
+		favourite_genres, err := GetUsersFavouriteGenres(userId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		err = godotenv.Load(".env")
+
+		if err != nil {
+			log.Println("Warning: .env file not found")
+		}
+
+		var recommendedMoviesLimitVal int64 = 5
+		recommendedMoviesLimitStr := os.Getenv("RECOMMENDED_MOVIE_LIMIT")
+		if recommendedMoviesLimitStr != "" {
+			recommendedMoviesLimitVal, _ = strconv.ParseInt(recommendedMoviesLimitStr, 10, 64)
+		}
+
+		findOptions := options.Find()
+		findOptions.SetSort(bson.D{{Key: "ranking.ranking_value", Value: 1}})
+		findOptions.SetLimit(recommendedMoviesLimitVal)
+
+		filter := bson.M{"genre.genre_name": bson.M{"$in": favourite_genres}}
+
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
+		cursor, err := movieCollection.Find(ctx, filter, findOptions)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching recommended movies"})
+			return
+		}
+		defer cursor.Close(ctx)
+
+		var recommendedMovies []models.Movie
+		if err = cursor.All(ctx, &recommendedMovies); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, recommendedMovies)
+
+	}
+}
+
+func GetUsersFavouriteGenres(userId string) ([]string, error) {
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
+
+	filter := bson.M{"user_id": userId}
+
+	projection := bson.M{
+		"favourite_genres.genre_name": 1,
+		"_id":                         0,
+	}
+
+	opts := options.FindOne().SetProjection(projection)
+	var result bson.M
+
+	err := userCollection.FindOne(ctx, filter, opts).Decode(&result)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return []string{}, nil
+		}
+		return nil, err
+	}
+
+	favGenresArray, ok := result["favourite_genres"].(bson.A)
+
+	if !ok {
+		return []string{}, errors.New("unable to retrieve favourite genres for user")
+	}
+
+	var genreNames []string
+
+	for _, item := range favGenresArray {
+		if genreMap, ok := item.(bson.D); ok {
+			for _, elem := range genreMap {
+				if name, ok := elem.Value.(string); ok {
+					genreNames = append(genreNames, name)
+				}
+			}
+		}
+	}
+
+	return genreNames, nil
+
 }

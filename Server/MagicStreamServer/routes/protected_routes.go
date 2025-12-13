@@ -2,11 +2,13 @@ package routes
 
 import (
 	controller "github.com/diegobbrito/MagicStream/Server/MagicStreamServer/controllers"
+	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-func SetupUnprotectedRoutes(router *gin.Engine) {
-	router.GET("/movies", controller.GetMovies())
-	router.POST("/register", controller.RegisterUser())
-	router.POST("/login", controller.LoginUser())
+func SetupProtectedRoutes(router *gin.Engine) {
+	router.Use(middleware.AuthMiddleware())
+
+	router.GET("/movies/:imdb_id", controller.GetMovie())
+	router.POST("/movies", controller.AddMovie())
 }

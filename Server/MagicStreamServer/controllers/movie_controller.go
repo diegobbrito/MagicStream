@@ -86,6 +86,12 @@ func GetMovie() gin.HandlerFunc {
 func AdminReviewUpdate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
+		role, err := utils.GetRoleFromContext(c)
+		if err != nil || role != "ADMIN" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
+			return
+		}
+
 		movieID := c.Param("imdb_id")
 
 		if movieID == "" {

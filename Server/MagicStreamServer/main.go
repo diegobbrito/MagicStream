@@ -4,9 +4,11 @@ import (
 	"log"
 	"os"
 
+	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/database"
 	"github.com/diegobbrito/MagicStream/Server/MagicStreamServer/routes"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 func main() {
@@ -22,8 +24,10 @@ func main() {
 		PORT = "8080"
 	}
 
-	routes.SetupUnprotectedRoutes(router)
-	routes.SetupProtectedRoutes(router)
+	var client *mongo.Client = database.Connect()
+
+	routes.SetupUnprotectedRoutes(router, client)
+	routes.SetupProtectedRoutes(router, client)
 
 	if err := router.Run(":" + PORT); err != nil {
 		log.Fatal("Failed to start server", err)

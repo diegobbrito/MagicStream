@@ -24,7 +24,6 @@ type SignedDetails struct {
 
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
 var SECRET_REFRESH_KEY string = os.Getenv("SECRET_REFRESH_KEY")
-var userCollection *mongo.Collection = database.OpenCollection("users")
 
 func GenerateAllTokens(email, firstName, lastName, role, userId string) (string, string, error) {
 	claims := &SignedDetails{
@@ -71,7 +70,7 @@ func GenerateAllTokens(email, firstName, lastName, role, userId string) (string,
 
 }
 
-func UpdateAllTokens(userId, token, refreshToken string) (err error) {
+func UpdateAllTokens(userId, token, refreshToken string, client *mongo.Client) (err error) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
 
@@ -85,6 +84,7 @@ func UpdateAllTokens(userId, token, refreshToken string) (err error) {
 		},
 	}
 
+	var userCollection *mongo.Collection = database.OpenCollection("users", client)
 	_, err = userCollection.UpdateOne(ctx, bson.M{"user_id": userId}, updateData)
 
 	if err != nil {

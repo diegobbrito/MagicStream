@@ -23,9 +23,7 @@ func HashPassword(password string) (string, error) {
 	return string(HashPassword), nil
 }
 
-var userCollection *mongo.Collection = database.OpenCollection("users")
-
-func RegisterUser() gin.HandlerFunc {
+func RegisterUser(client *mongo.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var user models.User
 
@@ -50,6 +48,8 @@ func RegisterUser() gin.HandlerFunc {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 		defer cancel()
+
+		var userCollection *mongo.Collection = database.OpenCollection("users", client)
 
 		count, err := userCollection.CountDocuments(ctx, bson.M{"email": user.Email})
 
@@ -79,7 +79,7 @@ func RegisterUser() gin.HandlerFunc {
 	}
 }
 
-func LoginUser() gin.HandlerFunc {
+func LoginUser(client *mongo.Client) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var userLogin models.UserLogin
 
@@ -93,6 +93,8 @@ func LoginUser() gin.HandlerFunc {
 		defer cancel()
 
 		var foundUser models.User
+
+		var userCollection *mongo.Collection = database.OpenCollection("users", client)
 
 		err := userCollection.FindOne(ctx, bson.M{"email": userLogin.Email}).Decode(&foundUser)
 
@@ -114,7 +116,7 @@ func LoginUser() gin.HandlerFunc {
 			return
 		}
 
-		err = utils.UpdateAllTokens(foundUser.UserID, token, refreshToken)
+		err = utils.UpdateAllTokens(foundUser.UserID, token, refreshToken, client)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating tokens"})

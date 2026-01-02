@@ -46,7 +46,7 @@ func RegisterUser(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		var ctx, cancel = context.WithTimeout(c, 100*time.Second)
 
 		defer cancel()
 
@@ -89,7 +89,7 @@ func LoginUser(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		var ctx, cancel = context.WithTimeout(c, 100*time.Second)
 
 		defer cancel()
 
@@ -117,7 +117,7 @@ func LoginUser(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		err = utils.UpdateAllTokens(foundUser.UserID, token, refreshToken, client)
+		err = utils.UpdateAllTokens(foundUser.UserID, token, refreshToken, client, c)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating tokens"})
@@ -152,7 +152,7 @@ func LogoutHandler(client *mongo.Client) gin.HandlerFunc {
 
 		fmt.Println("User ID from Logout request:", UserLogout.UserId)
 
-		err = utils.UpdateAllTokens(UserLogout.UserId, "", "", client)
+		err = utils.UpdateAllTokens(UserLogout.UserId, "", "", client, c)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error logging out"})
@@ -214,7 +214,7 @@ func RefreshTokenHandler(client *mongo.Client) gin.HandlerFunc {
 		}
 
 		newToken, newRefreshToken, _ := utils.GenerateAllTokens(user.Email, user.FirstName, user.LastName, user.Role, user.UserID)
-		err = utils.UpdateAllTokens(user.UserID, newToken, newRefreshToken, client)
+		err = utils.UpdateAllTokens(user.UserID, newToken, newRefreshToken, client, c)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error updating tokens"})
 			return

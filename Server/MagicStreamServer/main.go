@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 
@@ -25,6 +26,17 @@ func main() {
 	}
 
 	var client *mongo.Client = database.Connect()
+
+	if err := client.Ping(context.Background(), nil); err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+
+	defer func() {
+		err := client.Disconnect(context.Background())
+		if err != nil {
+			log.Fatal("Error disconnecting from database:", err)
+		}
+	}()
 
 	routes.SetupUnprotectedRoutes(router, client)
 	routes.SetupProtectedRoutes(router, client)

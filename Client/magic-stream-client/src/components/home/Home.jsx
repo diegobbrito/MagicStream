@@ -24,6 +24,7 @@ const Home = () => {
                 setLoading(false);
             }
         }
+        fetchMovies();
         }, [])
 
         return  (
@@ -37,3 +38,5 @@ const Home = () => {
 
         )
 }
+
+export default Home;

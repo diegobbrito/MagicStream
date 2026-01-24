@@ -17,6 +17,27 @@ const Register = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    const handleGenreChange = (e) => {
+        const options = Array.from(e.target.selectedOptions);
+        setFavouriteGenres(options.map(opt => ({
+            genre_id: Number(opt.value),
+            genre_name: opt.label
+        })));
+    }
+
+    useEffect(() => {
+        const fetchGenres = async () => {
+            try {
+                const response = await axiosClient.get('/genres');
+                setGenres(response.data);
+            } catch (err) {
+                console.error('Error fetching genres:', err);
+            }
+        };
+        fetchGenres();
+    }, []);
+
     return (
         <Container className="login-container d-flex align-items-center justify-content-center min-vh-100">
         <div className="login-card shadow p-4 rounded bg-white" style={{maxWidth: 400, width: '100%'}}>

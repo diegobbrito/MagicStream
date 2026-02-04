@@ -1,8 +1,9 @@
 import {useState, useEffect} from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
-import { Form } from 'react-bootstrap/Form';
+import Form from 'react-bootstrap/Form';
 import axiosClient from '../../api/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
@@ -42,7 +43,7 @@ const Register = () => {
         <Container className="login-container d-flex align-items-center justify-content-center min-vh-100">
         <div className="login-card shadow p-4 rounded bg-white" style={{maxWidth: 400, width: '100%'}}>
                 <div className="text-center mb-4">
-                     <img src={logo} alt="Logo" width={60} className="mb-2" />
+                     {/* <img src={logo} alt="Logo" width={60} className="mb-2" /> */}
                     <h2 className="fw-bold">Register</h2>
                     <p className="text-muted">Create your Magic Movie Stream account.</p>
                     {error && <div className="alert alert-danger py-2">{error}</div>}                

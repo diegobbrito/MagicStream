@@ -27,6 +27,42 @@ const Register = () => {
         })));
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        const defaultRole ="USER";
+
+        console.log(defaultRole);
+
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const payload = {
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                password,
+                role: defaultRole,
+                favourite_genres: favouriteGenres
+            };
+            const response = await axiosClient.post('/register', payload);
+            if (response.data.error) {
+                setError(response.data.error);
+                return;
+            }
+            navigate('/login', { replace: true });
+        } catch (err) {
+            setError('Registration failed. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         const fetchGenres = async () => {
             try {

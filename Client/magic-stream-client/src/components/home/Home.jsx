@@ -2,7 +2,7 @@ import {useState, useEffect, use} from 'react';
 import axiosClient from '../../api/axiosConfig.js';
 import Movies from '../movies/Movies.jsx';
 
-const Home = () => {
+const Home = ({updateMovieReview}) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState();
@@ -32,7 +32,7 @@ const Home = () => {
             {loading ? (
                 <h2>Loading movies...</h2>
             ) : (
-                <Movies movies={movies} message={message} />
+                <Movies movies={movies} updateMovieReview={updateMovieReview} message={message} />
             )}         
             </>
 

@@ -9,13 +9,17 @@ import RequiredAuth from './components/RequiredAuth.jsx'
 import Recommended from './components/recommended/Recommended.jsx'
 import Review from './components/review/Review.jsx'
 
+const updateMovieReview = (imdb_id) => {
+  Navigate(`/review/${imdb_id}`)
+}
+
 function App() {
 
   return (
     <>
       <Header />
       <Routes path="/" element = {Layout}>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home updateMovieReview={updateMovieReview}/>} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route element = {<RequiredAuth/>}>

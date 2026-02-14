@@ -1,0 +1,75 @@
+/* Container responsive */
+.container {
+  padding: 0 15px;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
+/* Row com melhor responsividade */
+.row {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+@media (max-width: 576px) {
+  .row {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+}
+
+/* Cards responsivos */
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Images responsivas */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Menu mobile */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    margin-top: 1rem;
+  }
+  
+  .nav {
+    flex-direction: column;
+  }
+}
+
+/* Typography responsiva */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  h5 {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5em;
+  }
+  
+  h5 {
+    font-size: 1em;
+  }
+}

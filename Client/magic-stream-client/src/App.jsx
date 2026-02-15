@@ -1,7 +1,7 @@
 import './App.css'
 import Home from './components/home/Home.jsx'
 import Header from './components/header/Header.jsx'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import Register from './components/register/Register.jsx'
 import Login from './components/login/Login.jsx'
 import Layout from './components/Layout.jsx'
@@ -9,11 +9,12 @@ import RequiredAuth from './components/RequiredAuth.jsx'
 import Recommended from './components/recommended/Recommended.jsx'
 import Review from './components/review/Review.jsx'
 
-const updateMovieReview = (imdb_id) => {
-  Navigate(`/review/${imdb_id}`)
-}
-
 function App() {
+  const navigate = useNavigate();
+  
+  const updateMovieReview = (imdb_id) => {
+    navigate(`/review/${imdb_id}`)
+  }
 
   return (
     <>

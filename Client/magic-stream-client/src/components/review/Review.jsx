@@ -1,8 +1,8 @@
 import {Form, Button} from 'react-bootstrap';
 import { useRef,useEffect,useState } from 'react';
 import {useParams} from 'react-router-dom'
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
-import useAuth from '../../hooks/useAuth';
+import useAxiosPrivate from '../../hook/useAxiosPrivate';
+import useAuth from '../../hook/useAuth';
 import Movie from '../movie/Movie'
 import Spinner from '../spinner/Spinner';
 

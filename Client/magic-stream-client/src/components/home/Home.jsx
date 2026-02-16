@@ -30,7 +30,9 @@ const Home = ({updateMovieReview}) => {
         return  (
             <>
             {loading ? (
-                <h2>Loading movies...</h2>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+                    <h2>Loading movies...</h2>
+                </div>
             ) : (
                 <Movies movies={movies} updateMovieReview={updateMovieReview} message={message} />
             )}         

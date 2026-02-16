@@ -23,10 +23,10 @@ const Header = () => {
                         <Nav.Link as={NavLink} to="/recommended">Recommended</Nav.Link>
                     </Nav>
 
-                    <Nav className='ms-auto align-items-center'>
+                    <Nav className='ms-auto align-items-center' style={{ gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                         {auth ? (
                             <>
-                                <span>
+                                <span style={{ whiteSpace: 'nowrap' }}>
                                     Hello, <strong>{auth.first_name}</strong>
                                 </span>
                                 <Button variant='outline-light' size='sm' >
@@ -38,7 +38,6 @@ const Header = () => {
                                 <Button
                                     variant='outline-info'
                                     size='sm'
-                                    className='me-2'
                                     onClick={() => navigate('/login')}
                                 >
                                     Login

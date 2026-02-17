@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 
 const Movie = ({ movie, updateMovieReview}) => {
     return (
-        <div className='col-md-4 mb-4'>
+        <div className='col-12 col-sm-6 col-lg-4 mb-4'>
             <div className='card h-100 shadow-sm'>
                 <div style={{position: 'relative'}}>
                     <img src={movie.poster_path} alt={movie.title} 

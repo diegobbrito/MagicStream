@@ -30,7 +30,9 @@ const Recommended = () => {
     return (
         <>
             {loading ? (
-                <h2>Loading recommendations...</h2>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+                    <h2>Loading recommendations...</h2>
+                </div>
             ) : <Movies movies={movies} message={message} />}
         </>
     )

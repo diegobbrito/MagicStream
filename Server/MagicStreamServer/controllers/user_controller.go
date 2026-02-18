@@ -125,13 +125,13 @@ func LoginUser(client *mongo.Client) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, models.UserResponse{
-			UserID:          foundUser.UserID,
-			FirstName:       foundUser.FirstName,
-			LastName:        foundUser.LastName,
-			Email:           foundUser.Email,
-			Role:            foundUser.Role,
-			Token:           token,
-			RefreshToken:    refreshToken,
+			UserID:    foundUser.UserID,
+			FirstName: foundUser.FirstName,
+			LastName:  foundUser.LastName,
+			Email:     foundUser.Email,
+			Role:      foundUser.Role,
+			// Token:           token,
+			// RefreshToken:    refreshToken,
 			FavouriteGenres: foundUser.FavouriteGenres,
 		})
 

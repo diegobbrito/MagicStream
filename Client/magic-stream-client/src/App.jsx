@@ -8,17 +8,31 @@ import Layout from './components/Layout.jsx'
 import RequiredAuth from './components/RequiredAuth.jsx'
 import Recommended from './components/recommended/Recommended.jsx'
 import Review from './components/review/Review.jsx'
+import axiosClient from './api/axiosConfig';
+import useAuth from './hook/useAuth';
 
 function App() {
   const navigate = useNavigate();
+  const {auth, setAuth} = useAuth();
   
   const updateMovieReview = (imdb_id) => {
     navigate(`/review/${imdb_id}`)
   }
 
+  const handleLogout = async () => {
+    try {
+      await axiosClient.post("/logout", {user_id: auth.user_id});
+      setAuth(null);
+      localStorage.removeItem("user");
+
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }
+
   return (
     <>
-      <Header />
+      <Header handleLogout={handleLogout} />
       <Routes path="/" element = {Layout}>
         <Route path='/' element={<Home updateMovieReview={updateMovieReview}/>} />
         <Route path='/register' element={<Register />} />

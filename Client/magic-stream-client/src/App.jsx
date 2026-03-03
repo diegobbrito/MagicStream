@@ -39,6 +39,7 @@ function App() {
         <Route element = {<RequiredAuth/>}>
           <Route path='/recommended' element={<Recommended />} />
           <Route path='/review/:imdb_id' element={<Review />} />
+          <Route path='/stream/:yt_id' element={<StreamMovie />} />
         </Route>
       </Routes>
     </>

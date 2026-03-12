@@ -10,6 +10,7 @@ import Recommended from './components/recommended/Recommended.jsx'
 import Review from './components/review/Review.jsx'
 import axiosClient from './api/axiosConfig';
 import useAuth from './hook/useAuth';
+import StreamMovie from './components/stream/StreamMovie.jsx'
 
 function App() {
   const navigate = useNavigate();

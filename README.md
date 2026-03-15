@@ -1,6 +1,8 @@
 # MagicStream 🎬✨
 
-Movie streaming platform with AI recommendation built with modern web technologies (React/Go/gin-gonic/MongoDB) 
+Movie streaming platform with AI recommendation built with modern web technologies (React/Go/gin-gonic/MongoDB)
+
+**Live demo:** https://magic-stream-hd7a.vercel.app/
 
 ---
 

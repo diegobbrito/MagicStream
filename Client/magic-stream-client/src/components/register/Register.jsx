@@ -20,13 +20,15 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleGenreChange = (e) => {
-        const options = Array.from(e.target.selectedOptions);
-        setFavouriteGenres(options.map(opt => ({
-            genre_id: Number(opt.value),
-            genre_name: opt.label
-        })));
-    }
+    const handleGenreToggle = (genre) => {
+        setFavouriteGenres(prev => {
+            const exists = prev.find(g => g.genre_id === genre.genre_id);
+            if (exists) {
+                return prev.filter(g => g.genre_id !== genre.genre_id);
+            }
+            return [...prev, genre];
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -141,20 +143,29 @@ const Register = () => {
                             Passwords do not match.
                         </Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group>
-                        <Form.Select
-                            multiple
-                            value={favouriteGenres.map(g => String(g.genre_id))}
-                            onChange={handleGenreChange}
-                        >
-                            {genres.map(genre => (
-                                <option key={genre.genre_id} value={genre.genre_id} label={genre.genre_name}>
-                                    {genre.genre_name}
-                                </option>
-                            ))}
-                        </Form.Select>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Favourite Genres</Form.Label>
+                        <div className="d-flex flex-column gap-2">
+                            {genres.length === 0 && <small className="text-muted">Loading genres...</small>}
+                            {genres.map(genre => {
+                                const checked = favouriteGenres.some(g => g.genre_id === genre.genre_id);
+                                return (
+                                    <Form.Check
+                                        key={genre.genre_id}
+                                        type="checkbox"
+                                        id={`genre-${genre.genre_id}`}
+                                        label={genre.genre_name}
+                                        checked={checked}
+                                        onChange={() => handleGenreToggle({
+                                            genre_id: genre.genre_id,
+                                            genre_name: genre.genre_name
+                                        })}
+                                    />
+                                );
+                            })}
+                        </div>
                         <Form.Text className="text-muted">
-                            Hold Ctrl (Windows) or Cmd (Mac) to select multiple genres.
+                            Click to select one or more genres.
                         </Form.Text>
                     </Form.Group>
                      <Button

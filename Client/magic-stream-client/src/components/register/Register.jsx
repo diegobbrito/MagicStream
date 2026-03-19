@@ -145,22 +145,23 @@ const Register = () => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Favourite Genres</Form.Label>
-                        <div className="d-flex flex-column gap-2">
-                            {genres.length === 0 && <small className="text-muted">Loading genres...</small>}
+                        {genres.length === 0 && <small className="text-muted">Loading genres...</small>}
+                        <div className="row g-2">
                             {genres.map(genre => {
                                 const checked = favouriteGenres.some(g => g.genre_id === genre.genre_id);
                                 return (
-                                    <Form.Check
-                                        key={genre.genre_id}
-                                        type="checkbox"
-                                        id={`genre-${genre.genre_id}`}
-                                        label={genre.genre_name}
-                                        checked={checked}
-                                        onChange={() => handleGenreToggle({
-                                            genre_id: genre.genre_id,
-                                            genre_name: genre.genre_name
-                                        })}
-                                    />
+                                    <div className="col-12 col-md-6" key={genre.genre_id}>
+                                        <Form.Check
+                                            type="checkbox"
+                                            id={`genre-${genre.genre_id}`}
+                                            label={genre.genre_name}
+                                            checked={checked}
+                                            onChange={() => handleGenreToggle({
+                                                genre_id: genre.genre_id,
+                                                genre_name: genre.genre_name
+                                            })}
+                                        />
+                                    </div>
                                 );
                             })}
                         </div>

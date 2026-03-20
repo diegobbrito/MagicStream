@@ -165,9 +165,6 @@ const Register = () => {
                                 );
                             })}
                         </div>
-                        <Form.Text className="text-muted">
-                            Click to select one or more genres.
-                        </Form.Text>
                     </Form.Group>
                      <Button
                         variant="primary"

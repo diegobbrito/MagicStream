@@ -60,7 +60,8 @@ const Register = () => {
             }
             navigate('/login', { replace: true });
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            const backendMessage = err?.response?.data?.error;
+            setError(backendMessage || 'Registration failed. Please try again.');
         } finally {
             setLoading(false);
         }

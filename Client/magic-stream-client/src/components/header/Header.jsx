@@ -14,14 +14,19 @@ const Header = ({handleLogout}) => {
         <Navbar bg="dark" variant='dark' expand="lg" stick="top" className='shadow-sm' >
             <Container>
                 <Navbar.Brand>
-                    <img
-                        alt=""
-                        src={logo}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top me-2"
-                    />
-                    Magic Stream
+                     <Nav className='me-auto'>
+                        <Nav.Link as={NavLink} to="/">
+                            <img
+                            alt=""
+                            src={logo}
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top me-2"
+                            />
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to="/">Magic Stream</Nav.Link>
+                     </Nav>
+                    
                 </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls='main-navbar-nav' />

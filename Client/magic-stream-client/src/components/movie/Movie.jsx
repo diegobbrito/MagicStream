@@ -26,7 +26,6 @@ const Movie = ({movie,updateMovieReview}) => {
                 </div>
                 <div className = "card-body d-flex flex-column">
                     <h5 className ="card-title">{movie.title}</h5>
-                    <p className="card-text mb-2">{movie.imdb_id}</p>
                 </div>
                 {movie.ranking?.ranking_name && (
                     <span className="badge bg-dark m-3 p-2" style={{fontSize:"1rem"}}>

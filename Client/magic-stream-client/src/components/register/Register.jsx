@@ -146,7 +146,7 @@ const Register = () => {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Favourite Genres</Form.Label>
-                        {genres.length === 0 && <small className="text-muted">Loading genres...</small>}
+                        {genres.length === 0 && <small className="text-muted d-block mb-2">Loading genres...</small>}
                         <div className="row g-2">
                             {genres.map(genre => {
                                 const checked = favouriteGenres.some(g => g.genre_id === genre.genre_id);

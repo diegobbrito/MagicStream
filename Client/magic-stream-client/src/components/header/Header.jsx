@@ -11,7 +11,7 @@ const Header = ({handleLogout}) => {
     const navigate = useNavigate();
     const {auth} = useAuth();
     return (
-        <Navbar bg="dark" variant='dark' expand="lg" stick="top" className='shadow-sm' >
+        <Navbar bg="dark" variant='dark' expand="lg" sticky="top" className='shadow-sm' >
             <Container>
                 <Navbar.Brand>
                      <Nav className='me-auto'>

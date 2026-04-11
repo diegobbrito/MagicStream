@@ -33,14 +33,16 @@ function App() {
   return (
     <>
       <Header handleLogout={handleLogout} />
-      <Routes path="/" element = {Layout}>
-        <Route path='/' element={<Home updateMovieReview={updateMovieReview}/>} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
-        <Route element = {<RequiredAuth/>}>
-          <Route path='/recommended' element={<Recommended />} />
-          <Route path='/review/:imdb_id' element={<Review />} />
-          <Route path='/stream/:yt_id' element={<StreamMovie />} />
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Home updateMovieReview={updateMovieReview} />} />
+          <Route path='register' element={<Register />} />
+          <Route path='login' element={<Login />} />
+          <Route element={<RequiredAuth />}>
+            <Route path='recommended' element={<Recommended />} />
+            <Route path='review/:imdb_id' element={<Review />} />
+            <Route path='stream/:yt_id' element={<StreamMovie />} />
+          </Route>
         </Route>
       </Routes>
     </>

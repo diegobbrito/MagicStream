@@ -219,6 +219,12 @@ func AddMovie(client *mongo.Client) gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
 		defer cancel()
 
+		role, err := utils.GetRoleFromContext(c)
+		if err != nil || role != "ADMIN" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
+			return
+		}
+
 		var movie models.Movie
 
 		if err := c.ShouldBindJSON(&movie); err != nil {

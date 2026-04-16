@@ -34,6 +34,9 @@ const Header = ({handleLogout}) => {
                     <Nav className='me-auto'>
                         <Nav.Link as={NavLink} to="/">Home</Nav.Link>
                         <Nav.Link as={NavLink} to="/recommended">Recommended</Nav.Link>
+                        {auth?.role === 'ADMIN' && (
+                            <Nav.Link as={NavLink} to="/admin/add-movie">Add Movie</Nav.Link>
+                        )}
                     </Nav>
 
                     <Nav className='ms-auto align-items-center' style={{ gap: '8px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>

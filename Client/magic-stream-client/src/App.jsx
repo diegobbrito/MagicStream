@@ -8,6 +8,7 @@ import Layout from './components/Layout.jsx'
 import RequiredAuth from './components/RequiredAuth.jsx'
 import Recommended from './components/recommended/Recommended.jsx'
 import Review from './components/review/Review.jsx'
+import AddMovie from './components/admin/AddMovie.jsx'
 import axiosClient from './api/axiosConfig';
 import useAuth from './hook/useAuth';
 import StreamMovie from './components/stream/StreamMovie.jsx'
@@ -40,6 +41,7 @@ function App() {
           <Route path='login' element={<Login />} />
           <Route element={<RequiredAuth />}>
             <Route path='recommended' element={<Recommended />} />
+            <Route path='admin/add-movie' element={<AddMovie />} />
             <Route path='review/:imdb_id' element={<Review />} />
             <Route path='stream/:yt_id' element={<StreamMovie />} />
           </Route>

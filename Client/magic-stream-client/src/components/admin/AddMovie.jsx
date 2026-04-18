@@ -103,7 +103,7 @@ const AddMovie = () => {
   return (
     <Container className="min-vh-100 py-4">
       <div className="p-4 bg-white rounded shadow-sm" style={{ maxWidth: 760, margin: '0 auto' }}>
-        <h2 className="mb-4">Adicionar Filme</h2>
+        <h2 className="mb-4">Add new movie</h2>
 
         {error && <Alert variant="danger">{error}</Alert>}
         {success && <Alert variant="success">{success}</Alert>}
@@ -121,12 +121,12 @@ const AddMovie = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="title">
-            <Form.Label>Título</Form.Label>
+            <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Nome do filme"
+              placeholder="Movie title"
               required
             />
           </Form.Group>
@@ -137,7 +137,7 @@ const AddMovie = () => {
               type="url"
               value={posterPath}
               onChange={(e) => setPosterPath(e.target.value)}
-              placeholder="URL do pôster"
+              placeholder="Poster URL"
               required
             />
           </Form.Group>
@@ -148,13 +148,13 @@ const AddMovie = () => {
               type="text"
               value={youtubeId}
               onChange={(e) => setYoutubeId(e.target.value)}
-              placeholder="ID do vídeo no YouTube"
+              placeholder="YouTube Video ID"
               required
             />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="genres">
-            <Form.Label>Gêneros</Form.Label>
+            <Form.Label>Genre</Form.Label>
             <div className="row g-2">
               {genres.map((genre) => {
                 const checked = selectedGenres.some((g) => g.genre_id === genre.genre_id);
@@ -174,18 +174,18 @@ const AddMovie = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="adminReview">
-            <Form.Label>Revisão Admin (opcional)</Form.Label>
+            <Form.Label>Admin Review (optional)</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
               value={adminReview}
               onChange={(e) => setAdminReview(e.target.value)}
-              placeholder="Comentário do administrador"
+              placeholder="Admin comment"
             />
           </Form.Group>
 
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? 'Salvando...' : 'Adicionar Filme'}
+            {submitting ? 'Saving...' : 'Add Movie'}
           </Button>
         </Form>
       </div>

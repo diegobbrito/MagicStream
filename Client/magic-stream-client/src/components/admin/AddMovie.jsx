@@ -72,7 +72,7 @@ const AddMovie = () => {
         admin_review: adminReview.trim(),
         ranking: {
           ranking_name: 'Not Rated',
-          ranking_value: 0,
+          ranking_value: 999,
         },
       };
 

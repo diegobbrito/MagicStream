@@ -56,7 +56,7 @@ const AddMovie = () => {
     setSuccess(null);
 
     if (selectedGenres.length === 0) {
-      setError('Selecione pelo menos um gênero.');
+      setError('Please select at least one genre.');
       return;
     }
 
@@ -77,7 +77,7 @@ const AddMovie = () => {
       };
 
       await axiosClient.post('/movies', payload);
-      setSuccess('Filme adicionado com sucesso.');
+      setSuccess('Movie added successfully.');
       setImdbId('');
       setTitle('');
       setPosterPath('');
@@ -85,7 +85,7 @@ const AddMovie = () => {
       setAdminReview('');
       setSelectedGenres([]);
     } catch (err) {
-      setError(err.response?.data?.error || 'Falha ao adicionar o filme.');
+      setError(err.response?.data?.error || 'Error adding movie. Please try again.');
       console.error(err);
     } finally {
       setSubmitting(false);

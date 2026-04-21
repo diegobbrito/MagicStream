@@ -20,13 +20,7 @@ const Recommended = () => {
             setMovies(response.data);
         } catch (err) {
             console.error('Error fetching recommended movies:', err);
-            
-            if (err.response?.status === 401) {
-                setMessage("Session expired. Please log in again.");
-                setTimeout(() => navigate('/login'), 2000);
-            } else {
-                setMessage("Failed to load recommendations. Please try again later.");
-            }
+            setMessage("Failed to load recommendations. Please try again later.");
         } finally {
             setLoading(false);
         }

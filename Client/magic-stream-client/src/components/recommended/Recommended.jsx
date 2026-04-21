@@ -1,5 +1,6 @@
 import useAxiosPrivate from "../../hook/useAxiosPrivate";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Movies from "../movies/Movies";
 
 const Recommended = () => {
@@ -7,6 +8,7 @@ const Recommended = () => {
    const [loading, setLoading] = useState(false);
    const [message, setMessage] = useState();
    const axiosPrivate = useAxiosPrivate();
+   const navigate = useNavigate();
 
    useEffect(() => {
     const fetchRecommendedMovies = async () => {
@@ -18,7 +20,13 @@ const Recommended = () => {
             setMovies(response.data);
         } catch (err) {
             console.error('Error fetching recommended movies:', err);
-            setMessage("Failed to load recommendations. Please try again later.");
+            
+            if (err.response?.status === 401) {
+                setMessage("Session expired. Please log in again.");
+                setTimeout(() => navigate('/login'), 2000);
+            } else {
+                setMessage("Failed to load recommendations. Please try again later.");
+            }
         } finally {
             setLoading(false);
         }

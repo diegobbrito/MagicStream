@@ -24,10 +24,11 @@ function App() {
   const handleLogout = async () => {
     try {
       await axiosClient.post("/logout", {user_id: auth.user_id});
-      setAuth(null);
-
     } catch (error) {
       console.error("Logout failed:", error);
+    } finally {
+      setAuth(null);
+      navigate('/login');
     }
   }
 

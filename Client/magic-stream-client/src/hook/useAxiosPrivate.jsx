@@ -9,7 +9,7 @@ const useAxiosPrivate = () =>{
 
     const axiosAuth = axios.create({
         baseURL: apiUrl,
-        withCredentials: true, // important for HTTP-only cookies
+        withCredentials: true, 
     });
 
 
@@ -18,7 +18,6 @@ const useAxiosPrivate = () =>{
     let isRefreshing = false;
     let failedQueue = [];
 
-    // Helper to process queued requests after token refresh
     const processQueue = (error, response = null) => {
         failedQueue.forEach(prom => {
             if (error) {
@@ -39,48 +38,48 @@ const useAxiosPrivate = () =>{
             console.log('⚠ Interceptor caught error:', error);
             const originalRequest = error.config;
 
-        if (originalRequest.url.includes('/refresh') && error.response.status === 401) {
-            console.error('Refresh token has expired or is invalid.');
-            return Promise.reject(error);
-        }
-
-            if (error.response && error.response.status === 401 && !originalRequest._retry) {
-
-                if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                failedQueue.push({ resolve, reject });
-                })
-                .then(() => axiosAuth(originalRequest))
-                .catch(err => Promise.reject(err));
+            if (originalRequest.url.includes('/refresh') && error.response?.status === 401) {
+                console.error('Refresh token has expired or is invalid.');
+                localStorage.removeItem('user');
+                setAuth(null);
+                return Promise.reject(error);
             }
 
-            originalRequest._retry = true;
-            isRefreshing = true;
+            if (error.response?.status === 401 && !originalRequest._retry) {
 
-            return new Promise((resolve, reject) => {
-                axiosAuth
-                .post('/refresh')
-                .then(() => {
-                
-                    processQueue(null);
+                if (isRefreshing) {
+                    return new Promise((resolve, reject) => {
+                        failedQueue.push({ resolve, reject });
+                    })
+                    .then(() => axiosAuth(originalRequest))
+                    .catch(err => Promise.reject(err));
+                }
 
-                axiosAuth(originalRequest)
-                    .then(resolve)
-                    .catch(reject);
+                originalRequest._retry = true;
+                isRefreshing = true;
 
-                })
-                .catch(refreshError => {
-
+                return new Promise((resolve, reject) => {
+                    axiosAuth
+                    .post('/refresh')
+                    .then(() => {
+                        processQueue(null);
+                        axiosAuth(originalRequest)
+                            .then(resolve)
+                            .catch(reject);
+                    })
+                    .catch(refreshError => {
                         processQueue(refreshError, null);
                         
+                        console.log('Failed to refresh token. Logging out user.');
                         localStorage.removeItem('user');
                         setAuth(null); // Clear auth state
-                        reject(refreshError); // fail the original promise chain
-                })
-                .finally(() => {
+                        window.location.href = '/login';
+                        reject(refreshError);
+                    })
+                    .finally(() => {
                         isRefreshing = false;
+                    });
                 });
-            });
             }
 
             return Promise.reject(error);

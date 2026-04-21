@@ -178,6 +178,7 @@ func GetReviewRanking(admin_review string, client *mongo.Client, c *gin.Context)
 	OpenAiApiKey := os.Getenv("OPENAI_API_KEY")
 
 	if OpenAiApiKey == "" {
+		log.Println("OpenAI API key not found in environment variables")
 		return "", 0, errors.New("OpenAI API key not found in environment variables")
 	}
 
@@ -190,6 +191,7 @@ func GetReviewRanking(admin_review string, client *mongo.Client, c *gin.Context)
 	base_prompt_template := os.Getenv("BASE_PROMPT_TEMPLATE")
 
 	if base_prompt_template == "" {
+		log.Println("base prompt template not found in environment variables")
 		return "", 0, errors.New("base prompt template not found in environment variables")
 	}
 
@@ -198,6 +200,7 @@ func GetReviewRanking(admin_review string, client *mongo.Client, c *gin.Context)
 	response, err := llm.Call(c, base_prompt+admin_review)
 
 	if err != nil {
+		log.Print(err)
 		return "", 0, err
 	}
 

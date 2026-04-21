@@ -98,7 +98,7 @@ func GetAccessToken(c *gin.Context) (string, error) {
 
 	tokenString, err := c.Cookie("access_token")
 	if err != nil {
-		return "", err
+		return "", errors.New("access token expired or not found")
 	}
 
 	return tokenString, nil

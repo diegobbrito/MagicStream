@@ -29,17 +29,31 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(c, 100*time.Second)
 		defer cancel()
 
+		pageStr := c.DefaultQuery("page", "1")
+		limitStr := c.DefaultQuery("limit", "6")
+		page, _ := strconv.Atoi(pageStr)
+		limit, _ := strconv.Atoi(limitStr)
+		if page < 1 {
+			page = 1
+		}
+		if limit < 1 {
+			limit = 6
+		}
+		skip := (page - 1) * limit
+
 		var movies []models.Movie
 		var movieCollection *mongo.Collection = database.OpenCollection("movies", client)
 
-		cursor, err := movieCollection.Find(ctx, bson.M{})
+		findOptions := options.Find()
+		findOptions.SetSkip(int64(skip))
+		findOptions.SetLimit(int64(limit))
 
+		cursor, err := movieCollection.Find(ctx, bson.M{}, findOptions)
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching movies from database"})
 			return
 		}
-
 		defer cursor.Close(ctx)
 
 		if err = cursor.All(ctx, &movies); err != nil {
@@ -48,7 +62,19 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, movies)
+		total, err := movieCollection.CountDocuments(ctx, bson.M{})
+		if err != nil {
+			log.Println(err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error counting movies"})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"movies": movies,
+			"total":  total,
+			"page":   page,
+			"limit":  limit,
+		})
 	}
 }
 
@@ -115,8 +141,8 @@ func AdminReviewUpdate(client *mongo.Client) gin.HandlerFunc {
 		sentiment, rankVal, err := GetReviewRanking(req.AdminReview, client, c)
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error getting review ranking"})
-			return
+			sentiment = "not rated"
+			rankVal = 999
 		}
 
 		filter := bson.M{"imdb_id": movieID}

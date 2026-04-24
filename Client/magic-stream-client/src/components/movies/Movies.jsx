@@ -24,15 +24,15 @@ const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPage
                         onClick={() => onPageChange(page - 1)}
                         disabled={page === 1}
                     >
-                        Anterior
+                        Previous
                     </button>
-                    <span style={{ alignSelf: 'center' }}>Página {page} de {totalPages}</span>
+                    <span style={{ alignSelf: 'center' }}>Page {page} of {totalPages}</span>
                     <button
                         className='btn btn-outline-secondary mx-2'
                         onClick={() => onPageChange(page + 1)}
                         disabled={page === totalPages}
                     >
-                        Próxima
+                        Next
                     </button>
                 </div>
             )}

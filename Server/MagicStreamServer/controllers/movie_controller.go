@@ -31,6 +31,9 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 
 		pageStr := c.DefaultQuery("page", "1")
 		limitStr := c.DefaultQuery("limit", "6")
+		rankingName := c.Query("ranking")
+		sortByRank := c.DefaultQuery("sort", "")
+
 		page, _ := strconv.Atoi(pageStr)
 		limit, _ := strconv.Atoi(limitStr)
 		if page < 1 {
@@ -44,11 +47,19 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 		var movies []models.Movie
 		var movieCollection *mongo.Collection = database.OpenCollection("movies", client)
 
+		filter := bson.M{}
+		if rankingName != "" {
+			filter["ranking.ranking_name"] = rankingName
+		}
+
 		findOptions := options.Find()
 		findOptions.SetSkip(int64(skip))
 		findOptions.SetLimit(int64(limit))
+		if sortByRank == "ranking" {
+			findOptions.SetSort(bson.D{{Key: "ranking.ranking_value", Value: 1}})
+		}
 
-		cursor, err := movieCollection.Find(ctx, bson.M{}, findOptions)
+		cursor, err := movieCollection.Find(ctx, filter, findOptions)
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching movies from database"})
@@ -62,7 +73,7 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
-		total, err := movieCollection.CountDocuments(ctx, bson.M{})
+		total, err := movieCollection.CountDocuments(ctx, filter)
 		if err != nil {
 			log.Println(err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error counting movies"})

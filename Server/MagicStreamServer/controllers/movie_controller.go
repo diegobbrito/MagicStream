@@ -31,7 +31,9 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 
 		pageStr := c.DefaultQuery("page", "1")
 		limitStr := c.DefaultQuery("limit", "6")
-		rankingName := c.Query("ranking")
+
+		rankingName := c.Query("ranking_name")
+		genreID := c.Query("genre_id")
 		sortByRank := c.DefaultQuery("sort", "")
 
 		page, _ := strconv.Atoi(pageStr)
@@ -50,6 +52,9 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 		filter := bson.M{}
 		if rankingName != "" {
 			filter["ranking.ranking_name"] = rankingName
+		}
+		if genreID != "" {
+			filter["genre.genre_id"] = genreID
 		}
 
 		findOptions := options.Find()

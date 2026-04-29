@@ -32,16 +32,18 @@ const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPage
                     </select>
                 </div>
                 <div className='col-md-4'>
-                    <label htmlFor='ranking-filter' className='form-label'>Filtrar por Classificação</label>
+                    <label htmlFor='ranking-filter' className='form-label'>Filter by Ranking</label>
                     <select
                         id='ranking-filter'
                         className='form-select'
                         value={selectedRanking}
                         onChange={e => setSelectedRanking(e.target.value)}
                     >
-                        <option value=''>Todas</option>
+                        <option value=''>All</option>
                         {rankings.map(ranking => (
-                            <option key={ranking} value={ranking}>{ranking}</option>
+                            <option key={ranking} value={ranking}>
+                                {ranking === 'Not_Ranked' ? 'Not Ranked' : ranking}
+                            </option>
                         ))}
                     </select>
                 </div>

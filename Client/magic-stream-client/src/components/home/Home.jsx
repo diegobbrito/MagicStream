@@ -1,9 +1,17 @@
+
 import { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosConfig.js';
 import Movies from '../movies/Movies.jsx';
 
 const MOVIES_PER_PAGE = 6;
-
+const FIXED_RANKINGS = [
+    'Not_Ranked',
+    'Excellent',
+    'Good',
+    'Okay',
+    'Bad',
+    'Terrible',
+];
 
 const Home = ({ updateMovieReview }) => {
     const [movies, setMovies] = useState([]);
@@ -12,12 +20,11 @@ const Home = ({ updateMovieReview }) => {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [genres, setGenres] = useState([]);
-    const [rankings, setRankings] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const [selectedRanking, setSelectedRanking] = useState('');
 
     useEffect(() => {
-        // Busca gêneros
+        // Fetch genres only
         const fetchGenres = async () => {
             try {
                 const response = await axiosClient.get('/genres');
@@ -34,18 +41,12 @@ const Home = ({ updateMovieReview }) => {
             setLoading(true);
             setMessage("");
             try {
-                // Monta query string com filtros
                 let query = `/movies?page=${page}&limit=${MOVIES_PER_PAGE}`;
                 if (selectedGenre) query += `&genre_id=${selectedGenre}`;
                 if (selectedRanking) query += `&ranking_name=${encodeURIComponent(selectedRanking)}`;
                 const response = await axiosClient.get(query);
                 setMovies(response.data.movies);
                 setTotal(response.data.total);
-                // Extrai rankings únicos dos filmes
-                const allRankings = (response.data.movies || [])
-                    .map(m => m.ranking?.ranking_name)
-                    .filter(Boolean);
-                setRankings([...new Set(allRankings)]);
                 if (response.data.movies.length === 0) {
                     setMessage("No movies available.");
                 }
@@ -79,7 +80,7 @@ const Home = ({ updateMovieReview }) => {
                     limit={MOVIES_PER_PAGE}
                     onPageChange={handlePageChange}
                     genres={genres}
-                    rankings={rankings}
+                    rankings={FIXED_RANKINGS}
                     selectedGenre={selectedGenre}
                     setSelectedGenre={setSelectedGenre}
                     selectedRanking={selectedRanking}

@@ -54,7 +54,10 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 			filter["ranking.ranking_name"] = rankingName
 		}
 		if genreID != "" {
-			filter["genre.genre_id"] = genreID
+			genreIDInt, err := strconv.Atoi(genreID)
+			if err == nil {
+				filter["genre.genre_id"] = genreIDInt
+			}
 		}
 
 		findOptions := options.Find()

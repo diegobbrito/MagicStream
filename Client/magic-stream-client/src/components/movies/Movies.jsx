@@ -18,14 +18,14 @@ const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPage
             {/* Filtros */}
             <div className='row mb-4'>
                 <div className='col-md-4'>
-                    <label htmlFor='genre-filter' className='form-label'>Filtrar por Gênero</label>
+                    <label htmlFor='genre-filter' className='form-label'>Filter by Genre</label>
                     <select
                         id='genre-filter'
                         className='form-select'
                         value={selectedGenre}
                         onChange={e => setSelectedGenre(e.target.value)}
                     >
-                        <option value=''>Todos</option>
+                        <option value=''>All</option>
                         {genres.map(genre => (
                             <option key={genre.genre_id} value={genre.genre_id}>{genre.genre_name}</option>
                         ))}

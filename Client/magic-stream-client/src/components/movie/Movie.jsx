@@ -24,14 +24,14 @@ const Movie = ({movie,updateMovieReview}) => {
                             <FontAwesomeIcon icon={faCirclePlay} />
                     </span>
                 </div>
-                <div className = "card-body d-flex flex-column">
-                    <h5 className ="card-title">{movie.title}</h5>
+                <div className = "card-body d-flex flex-column align-items-center p-2">
+                    <h5 className ="card-title movie-title mb-2 text-center">{movie.title}</h5>
+                    {movie.ranking?.ranking_name && (
+                        <span className="badge bg-dark px-3 py-2 movie-badge" style={{fontSize:"1rem"}}>
+                            {movie.ranking.ranking_name}
+                        </span>
+                    )}
                 </div>
-                {movie.ranking?.ranking_name && (
-                    <span className="badge bg-dark m-3 p-2" style={{fontSize:"1rem"}}>
-                        {movie.ranking.ranking_name}
-                    </span>
-                )}
                   {updateMovieReview && (
                         <Button
                             variant="outline-info"

@@ -5,6 +5,17 @@
 .movie-card img.card-img-top {
     margin-top: 16px;
 }
+.movie-title {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem !important;
+}
+.movie-badge {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    display: block;
+    text-align: center;
+}
 .movie-card:hover {
     transform: translateY(-8px) scale(1.03);
     z-index: 2;

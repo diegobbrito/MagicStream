@@ -2,6 +2,9 @@
     transition: transform 0.2s;
 
 }
+.movie-card img.card-img-top {
+    margin-top: 16px;
+}
 .movie-card:hover {
     transform: translateY(-8px) scale(1.03);
     z-index: 2;

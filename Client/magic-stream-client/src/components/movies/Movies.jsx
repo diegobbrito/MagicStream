@@ -42,7 +42,7 @@ const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPage
                         <option value=''>All</option>
                         {rankings.map(ranking => (
                             <option key={ranking} value={ranking}>
-                                {ranking === 'Not_Ranked' ? 'Not Ranked' : ranking}
+                                {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
                             </option>
                         ))}
                     </select>

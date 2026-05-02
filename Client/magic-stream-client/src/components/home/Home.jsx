@@ -5,12 +5,12 @@ import Movies from '../movies/Movies.jsx';
 
 const MOVIES_PER_PAGE = 6;
 const FIXED_RANKINGS = [
-    'Not_Ranked',
     'Excellent',
     'Good',
     'Okay',
     'Bad',
     'Terrible',
+    'Not_Rated',
 ];
 
 const Home = ({ updateMovieReview }) => {

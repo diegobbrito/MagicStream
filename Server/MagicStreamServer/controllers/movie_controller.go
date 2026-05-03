@@ -51,7 +51,8 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 
 		filter := bson.M{}
 		if rankingName != "" {
-			filter["ranking.ranking_name"] = rankingName
+			altRankingName := strings.ReplaceAll(rankingName, "_", " ")
+			filter["ranking.ranking_name"] = bson.M{"$in": []string{rankingName, altRankingName}}
 		}
 		if genreID != "" {
 			genreIDInt, err := strconv.Atoi(genreID)

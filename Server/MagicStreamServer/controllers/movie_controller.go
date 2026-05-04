@@ -82,6 +82,10 @@ func GetMovies(client *mongo.Client) gin.HandlerFunc {
 			return
 		}
 
+		if movies == nil {
+			movies = make([]models.Movie, 0)
+		}
+
 		total, err := movieCollection.CountDocuments(ctx, filter)
 		if err != nil {
 			log.Println(err)

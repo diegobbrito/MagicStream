@@ -13,7 +13,7 @@ const FIXED_RANKINGS = [
     'Not_Rated',
 ];
 
-const Home = ({ updateMovieReview }) => {
+const Home = ({ updateMovieReview, setHomeResetRef }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState();
@@ -22,6 +22,15 @@ const Home = ({ updateMovieReview }) => {
     const [genres, setGenres] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const [selectedRanking, setSelectedRanking] = useState('');
+    useEffect(() => {
+        if (setHomeResetRef) {
+            setHomeResetRef(() => () => {
+                setSelectedGenre('');
+                setSelectedRanking('');
+                setPage(1);
+            });
+        }
+    }, [setHomeResetRef]);
 
     useEffect(() => {
         // Fetch genres only

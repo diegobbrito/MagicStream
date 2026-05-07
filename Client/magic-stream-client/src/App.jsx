@@ -13,10 +13,12 @@ import axiosClient from './api/axiosConfig';
 import useAuth from './hook/useAuth';
 import StreamMovie from './components/stream/StreamMovie.jsx'
 
+import { useRef } from 'react';
 function App() {
   const navigate = useNavigate();
   const {auth, setAuth} = useAuth();
-  
+  const homeResetRef = useRef(null);
+
   const updateMovieReview = (imdb_id) => {
     navigate(`/review/${imdb_id}`)
   }
@@ -32,12 +34,19 @@ function App() {
     }
   }
 
+  const handleHomeReset = () => {
+    if (homeResetRef.current) {
+      homeResetRef.current();
+    }
+    navigate('/');
+  };
+
   return (
     <>
-      <Header handleLogout={handleLogout} />
+      <Header handleLogout={handleLogout} onHomeClick={handleHomeReset} />
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<Home updateMovieReview={updateMovieReview} />} />
+          <Route index element={<Home updateMovieReview={updateMovieReview} setHomeResetRef={ref => homeResetRef.current = ref} />} />
           <Route path='register' element={<Register />} />
           <Route path='login' element={<Login />} />
           <Route element={<RequiredAuth />}>

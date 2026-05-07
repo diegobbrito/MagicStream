@@ -33,7 +33,6 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
     }, [setHomeResetRef]);
 
     useEffect(() => {
-        // Fetch genres only
         const fetchGenres = async () => {
             try {
                 const response = await axiosClient.get('/genres');

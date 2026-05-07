@@ -7,7 +7,7 @@ import { useNavigate, NavLink, Link, useLocation } from 'react-router-dom';
 import useAuth from '../../hook/useAuth';
 import logo from '../../assets/MagicStreamLogo.png';
 
-const Header = ({handleLogout}) => {
+const Header = ({handleLogout, onHomeClick}) => {
     const navigate = useNavigate();
     const location = useLocation();
     const {auth} = useAuth();
@@ -16,7 +16,7 @@ const Header = ({handleLogout}) => {
             <Container>
                 <Navbar.Brand>
                      <Nav className='me-auto'>
-                        <Nav.Link as={NavLink} to="/">
+                        <Nav.Link as={NavLink} to="/" onClick={e => { e.preventDefault(); onHomeClick && onHomeClick(); }}>
                             <img
                             alt=""
                             src={logo}
@@ -25,15 +25,14 @@ const Header = ({handleLogout}) => {
                             className="d-inline-block align-top me-2"
                             />
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to="/">Magic Stream</Nav.Link>
+                        <Nav.Link as={NavLink} to="/" onClick={e => { e.preventDefault(); onHomeClick && onHomeClick(); }}>Magic Stream</Nav.Link>
                      </Nav>
-                    
                 </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls='main-navbar-nav' />
                 <Navbar.Collapse>
                     <Nav className='me-auto'>
-                        <Nav.Link as={NavLink} to="/">Home</Nav.Link>
+                        <Nav.Link as={NavLink} to="/" onClick={e => { e.preventDefault(); onHomeClick && onHomeClick(); }}>Home</Nav.Link>
                         <Nav.Link as={NavLink} to="/recommended">Recommended</Nav.Link>
                         {auth?.role === 'ADMIN' && (
                             <Nav.Link as={NavLink} to="/admin/add-movie">Add Movie</Nav.Link>

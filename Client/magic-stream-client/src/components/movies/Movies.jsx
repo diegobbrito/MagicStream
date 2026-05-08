@@ -5,11 +5,6 @@ import Movie from '../movie/Movie.jsx';
 
 const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPageChange, genres = [], rankings = [], selectedGenre, setSelectedGenre, selectedRanking, setSelectedRanking }) => {
 
-    if (!movies || movies.length === 0) {
-        return (
-            <div style={{ width: '100%', textAlign: 'center', padding: '2rem' }}><h2>{message}</h2></div>
-        );
-    }
 
     const totalPages = Math.ceil(total / limit);
 
@@ -50,7 +45,9 @@ const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPage
             </div>
             <div className='row'>
                 {movies.length === 0 ? (
-                    <div style={{ width: '100%', textAlign: 'center', padding: '2rem' }}><h4>Nenhum filme encontrado com os filtros selecionados.</h4></div>
+                    <div style={{ width: '100%', textAlign: 'center', padding: '2rem' }}>
+                        <h2>{message}</h2>
+                    </div>
                 ) : (
                     movies.map((movie) => (
                         <Movie key={movie._id} updateMovieReview={updateMovieReview} movie={movie} />

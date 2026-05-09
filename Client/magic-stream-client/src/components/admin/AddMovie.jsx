@@ -21,6 +21,16 @@ const AddMovie = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [rankingName, setRankingName] = useState('Excellent');
+  const [rankingValue, setRankingValue] = useState(1);
+
+  const rankingOptions = [
+    { name: 'Excellent', value: 1 },
+    { name: 'Good', value: 2 },
+    { name: 'Okay', value: 3 },
+    { name: 'Bad', value: 4 },
+    { name: 'Terrible', value: 5 },
+  ];
 
   useEffect(() => {
     if (!loading && auth && auth.role !== 'ADMIN') {
@@ -71,8 +81,8 @@ const AddMovie = () => {
         genre: selectedGenres,
         admin_review: adminReview.trim(),
         ranking: {
-          ranking_name: 'Not Rated',
-          ranking_value: 999,
+          ranking_name: rankingName,
+          ranking_value: rankingValue,
         },
       };
 
@@ -84,6 +94,8 @@ const AddMovie = () => {
       setYoutubeId('');
       setAdminReview('');
       setSelectedGenres([]);
+      setRankingName('Excellent');
+      setRankingValue(1);
     } catch (err) {
       setError(err.response?.data?.error || 'Error adding movie. Please try again.');
       console.error(err);
@@ -171,6 +183,23 @@ const AddMovie = () => {
                 );
               })}
             </div>
+          </Form.Group>
+
+
+          <Form.Group className="mb-3" controlId="ranking">
+            <Form.Label>Ranking</Form.Label>
+            <Form.Select
+              value={rankingValue}
+              onChange={e => {
+                const selected = rankingOptions.find(opt => opt.value === parseInt(e.target.value));
+                setRankingValue(selected.value);
+                setRankingName(selected.name);
+              }}
+            >
+              {rankingOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.name}</option>
+              ))}
+            </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="adminReview">

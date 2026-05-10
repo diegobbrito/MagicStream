@@ -25,6 +25,7 @@ const AddMovie = () => {
   const [rankingValue, setRankingValue] = useState(1);
 
   const rankingOptions = [
+    { name: 'Not Rated', value: 999 },
     { name: 'Excellent', value: 1 },
     { name: 'Good', value: 2 },
     { name: 'Okay', value: 3 },

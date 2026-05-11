@@ -20,13 +20,20 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [genres, setGenres] = useState([]);
-    const [selectedGenre, setSelectedGenre] = useState('');
-    const [selectedRanking, setSelectedRanking] = useState('');
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [selectedRankings, setSelectedRankings] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [pendingFilters, setPendingFilters] = useState({
+        genres: [],
+        rankings: [],
+        search: ''
+    });
     useEffect(() => {
         if (setHomeResetRef) {
             setHomeResetRef(() => () => {
-                setSelectedGenre('');
-                setSelectedRanking('');
+                setSelectedGenres([]);
+                setSelectedRankings([]);
+                setSearchTerm('');
                 setPage(1);
             });
         }
@@ -50,8 +57,19 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
             setMessage("");
             try {
                 let query = `/movies?page=${page}&limit=${MOVIES_PER_PAGE}`;
-                if (selectedGenre) query += `&genre_id=${selectedGenre}`;
-                if (selectedRanking) query += `&ranking_name=${encodeURIComponent(selectedRanking)}`;
+                if (selectedGenres.length > 0) {
+                    selectedGenres.forEach(gid => {
+                        query += `&genre_id=${gid}`;
+                    });
+                }
+                if (selectedRankings.length > 0) {
+                    selectedRankings.forEach(rk => {
+                        query += `&ranking_name=${encodeURIComponent(rk)}`;
+                    });
+                }
+                if (searchTerm) {
+                    query += `&search=${encodeURIComponent(searchTerm)}`;
+                }
                 const response = await axiosClient.get(query);
                 setMovies(response.data.movies);
                 setTotal(response.data.total);
@@ -66,10 +84,18 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
             }
         };
         fetchMovies();
-    }, [page, selectedGenre, selectedRanking]);
+    }, [page, selectedGenres, selectedRankings, searchTerm]);
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
+    };
+
+    // Handler para aplicar filtros
+    const handleApplyFilters = () => {
+        setSelectedGenres(pendingFilters.genres);
+        setSelectedRankings(pendingFilters.rankings);
+        setSearchTerm(pendingFilters.search);
+        setPage(1);
     };
 
     return (
@@ -89,10 +115,13 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
                     onPageChange={handlePageChange}
                     genres={genres}
                     rankings={FIXED_RANKINGS}
-                    selectedGenre={selectedGenre}
-                    setSelectedGenre={setSelectedGenre}
-                    selectedRanking={selectedRanking}
-                    setSelectedRanking={setSelectedRanking}
+                    selectedGenres={pendingFilters.genres}
+                    setSelectedGenres={genres => setPendingFilters(f => ({ ...f, genres }))}
+                    selectedRankings={pendingFilters.rankings}
+                    setSelectedRankings={rankings => setPendingFilters(f => ({ ...f, rankings }))}
+                    searchTerm={pendingFilters.search}
+                    setSearchTerm={search => setPendingFilters(f => ({ ...f, search }))}
+                    onApplyFilters={handleApplyFilters}
                 />
             )}
         </>

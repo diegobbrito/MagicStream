@@ -3,44 +3,84 @@
 import { useState } from 'react';
 import Movie from '../movie/Movie.jsx';
 
-const Movies = ({ movies, updateMovieReview, message, page, total, limit, onPageChange, genres = [], rankings = [], selectedGenre, setSelectedGenre, selectedRanking, setSelectedRanking }) => {
+
+const Movies = ({
+    movies,
+    updateMovieReview,
+    message,
+    page,
+    total,
+    limit,
+    onPageChange,
+    genres = [],
+    rankings = [],
+    selectedGenres = [],
+    setSelectedGenres,
+    selectedRankings = [],
+    setSelectedRankings,
+    searchTerm,
+    setSearchTerm,
+    onApplyFilters
+}) => {
 
 
     const totalPages = Math.ceil(total / limit);
 
     return (
         <div className='container'>
-            {/* Filtros */}
+            {/* Barra de pesquisa e filtros */}
             <div className='row mb-4'>
-                <div className='col-md-4'>
-                    <label htmlFor='genre-filter' className='form-label'>Filter by Genre</label>
+                <div className='col-md-4 mb-2'>
+                    <label htmlFor='search-bar' className='form-label'>Buscar por nome</label>
+                    <input
+                        id='search-bar'
+                        className='form-control'
+                        type='text'
+                        placeholder='Digite o nome do filme...'
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                    />
+                </div>
+                <div className='col-md-4 mb-2'>
+                    <label htmlFor='genre-filter' className='form-label'>Filtrar por Gênero</label>
                     <select
                         id='genre-filter'
                         className='form-select'
-                        value={selectedGenre}
-                        onChange={e => setSelectedGenre(e.target.value)}
+                        multiple
+                        value={selectedGenres}
+                        onChange={e => {
+                            const options = Array.from(e.target.selectedOptions, option => option.value);
+                            setSelectedGenres(options);
+                        }}
                     >
-                        <option value=''>All</option>
                         {genres.map(genre => (
                             <option key={genre.genre_id} value={genre.genre_id}>{genre.genre_name}</option>
                         ))}
                     </select>
                 </div>
-                <div className='col-md-4'>
-                    <label htmlFor='ranking-filter' className='form-label'>Filter by Ranking</label>
+                <div className='col-md-4 mb-2'>
+                    <label htmlFor='ranking-filter' className='form-label'>Filtrar por Ranking</label>
                     <select
                         id='ranking-filter'
                         className='form-select'
-                        value={selectedRanking}
-                        onChange={e => setSelectedRanking(e.target.value)}
+                        multiple
+                        value={selectedRankings}
+                        onChange={e => {
+                            const options = Array.from(e.target.selectedOptions, option => option.value);
+                            setSelectedRankings(options);
+                        }}
                     >
-                        <option value=''>All</option>
                         {rankings.map(ranking => (
                             <option key={ranking} value={ranking}>
                                 {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
                             </option>
                         ))}
                     </select>
+                </div>
+                <div className='col-md-12 mt-2'>
+                    <button className='btn btn-primary' onClick={onApplyFilters}>
+                        Aplicar Filtros
+                    </button>
                 </div>
             </div>
             <div className='row'>

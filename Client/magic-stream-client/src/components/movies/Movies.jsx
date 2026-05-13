@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import Movie from '../movie/Movie.jsx';
+import FilterPanel from './FilterPanel.jsx';
+import './FilterPanel.css';
 
 
 const Movies = ({
@@ -25,64 +27,47 @@ const Movies = ({
 
 
     const totalPages = Math.ceil(total / limit);
+    const [showFilter, setShowFilter] = useState(false);
 
     return (
         <div className='container'>
-            {/* Barra de pesquisa e filtros */}
-            <div className='row mb-4'>
-                <div className='col-md-4 mb-2'>
-                    <label htmlFor='search-bar' className='form-label'>Buscar por nome</label>
+            {/* Barra de pesquisa e botão de filtro */}
+            <div className='row mb-4 align-items-end'>
+                <div className='col-md-10 mb-2'>
+                    <label htmlFor='search-bar' className='form-label visually-hidden'>Search by name</label>
                     <input
                         id='search-bar'
                         className='form-control'
                         type='text'
-                        placeholder='Digite o nome do filme...'
+                        placeholder='Search movie by name...'
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
+                        style={{ minWidth: 180 }}
                     />
                 </div>
-                <div className='col-md-4 mb-2'>
-                    <label htmlFor='genre-filter' className='form-label'>Filtrar por Gênero</label>
-                    <select
-                        id='genre-filter'
-                        className='form-select'
-                        multiple
-                        value={selectedGenres}
-                        onChange={e => {
-                            const options = Array.from(e.target.selectedOptions, option => option.value);
-                            setSelectedGenres(options);
-                        }}
+                <div className='col-md-2 mb-2 d-flex justify-content-end'>
+                    <button
+                        className='btn btn-outline-secondary'
+                        style={{ fontSize: '1.5rem', padding: '0.3rem 0.7rem' }}
+                        title='Filter options'
+                        onClick={() => setShowFilter(true)}
                     >
-                        {genres.map(genre => (
-                            <option key={genre.genre_id} value={genre.genre_id}>{genre.genre_name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className='col-md-4 mb-2'>
-                    <label htmlFor='ranking-filter' className='form-label'>Filtrar por Ranking</label>
-                    <select
-                        id='ranking-filter'
-                        className='form-select'
-                        multiple
-                        value={selectedRankings}
-                        onChange={e => {
-                            const options = Array.from(e.target.selectedOptions, option => option.value);
-                            setSelectedRankings(options);
-                        }}
-                    >
-                        {rankings.map(ranking => (
-                            <option key={ranking} value={ranking}>
-                                {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className='col-md-12 mt-2'>
-                    <button className='btn btn-primary' onClick={onApplyFilters}>
-                        Aplicar Filtros
+                        <span role="img" aria-label="filter">🔎</span>
                     </button>
                 </div>
             </div>
+            {showFilter && (
+                <FilterPanel
+                    genres={genres}
+                    rankings={rankings}
+                    selectedGenres={selectedGenres}
+                    setSelectedGenres={setSelectedGenres}
+                    selectedRankings={selectedRankings}
+                    setSelectedRankings={setSelectedRankings}
+                    onApplyFilters={() => { setShowFilter(false); onApplyFilters(); }}
+                    onClose={() => setShowFilter(false)}
+                />
+            )}
             <div className='row'>
                 {movies.length === 0 ? (
                     <div style={{ width: '100%', textAlign: 'center', padding: '2rem' }}>

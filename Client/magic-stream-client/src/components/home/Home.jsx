@@ -115,9 +115,9 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
                     onPageChange={handlePageChange}
                     genres={genres}
                     rankings={FIXED_RANKINGS}
-                    selectedGenres={pendingFilters.genres}
+                    selectedGenres={Array.isArray(pendingFilters.genres) ? pendingFilters.genres : []}
                     setSelectedGenres={genres => setPendingFilters(f => ({ ...f, genres }))}
-                    selectedRankings={pendingFilters.rankings}
+                    selectedRankings={Array.isArray(pendingFilters.rankings) ? pendingFilters.rankings : []}
                     setSelectedRankings={rankings => setPendingFilters(f => ({ ...f, rankings }))}
                     searchTerm={pendingFilters.search}
                     setSearchTerm={search => setPendingFilters(f => ({ ...f, search }))}

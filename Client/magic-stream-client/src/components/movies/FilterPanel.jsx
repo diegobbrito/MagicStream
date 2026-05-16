@@ -26,7 +26,10 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
         <h5>Genres</h5>
         <div className="filter-options">
           {genres.map((genre) => (
-            <label key={genre.genre_id} className="filter-checkbox">
+            <label
+              key={genre.genre_id}
+              className={`filter-checkbox${selectedGenres.includes(genre.genre_id) ? ' filter-checkbox--active' : ''}`}
+            >
               <input
                 type="checkbox"
                 checked={selectedGenres.includes(genre.genre_id)}
@@ -39,7 +42,10 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
         <h5>Rankings</h5>
         <div className="filter-options">
           {rankings.map((ranking) => (
-            <label key={ranking} className="filter-checkbox">
+            <label
+              key={ranking}
+              className={`filter-checkbox${selectedRankings.includes(ranking) ? ' filter-checkbox--active' : ''}`}
+            >
               <input
                 type="checkbox"
                 checked={selectedRankings.includes(ranking)}

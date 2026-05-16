@@ -63,9 +63,8 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
                     });
                 }
                 if (selectedRankings.length > 0) {
-                    selectedRankings.forEach(rk => {
-                        query += `&ranking_name=${encodeURIComponent(rk)}`;
-                    });
+                    const rankingParam = selectedRankings.map(rk => encodeURIComponent(rk)).join(',');
+                    query += `&ranking_name=${rankingParam}`;
                 }
                 if (searchTerm) {
                     query += `&search=${encodeURIComponent(searchTerm)}`;

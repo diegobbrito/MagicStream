@@ -58,9 +58,8 @@ const Home = ({ updateMovieReview, setHomeResetRef }) => {
             try {
                 let query = `/movies?page=${page}&limit=${MOVIES_PER_PAGE}`;
                 if (selectedGenres.length > 0) {
-                    selectedGenres.forEach(gid => {
-                        query += `&genre_id=${gid}`;
-                    });
+                    const genreParam = selectedGenres.join(',');
+                    query += `&genre_id=${genreParam}`;
                 }
                 if (selectedRankings.length > 0) {
                     const rankingParam = selectedRankings.map(rk => encodeURIComponent(rk)).join(',');

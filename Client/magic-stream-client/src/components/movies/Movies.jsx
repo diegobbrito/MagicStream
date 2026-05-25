@@ -31,7 +31,7 @@ const Movies = ({
 
     return (
         <div className='container'>
-            {/* Barra de pesquisa e botão de filtro */}
+            {}
             <div className='row mb-4 align-items-end'>
                 <div className='col-md-10 mb-2'>
                     <label htmlFor='search-bar' className='form-label visually-hidden'>Search by name</label>

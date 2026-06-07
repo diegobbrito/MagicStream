@@ -25,35 +25,55 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
         <button className="close-btn" onClick={onClose}>&times;</button>
         <h5>Genres</h5>
         <div className="filter-options">
-          {genres.map((genre) => (
-            <label
-              key={genre.genre_id}
-              className={`filter-checkbox${selectedGenres.includes(genre.genre_id) ? ' filter-checkbox--active' : ''}`}
-            >
-              <input
-                type="checkbox"
-                checked={selectedGenres.includes(genre.genre_id)}
-                onChange={() => toggleGenre(genre.genre_id)}
-              />
-              {genre.genre_name}
-            </label>
-          ))}
+          {genres.map((genre) => {
+            const checked = selectedGenres.includes(genre.genre_id);
+            return (
+              <div
+                key={genre.genre_id}
+                className={`filter-checkbox form-check${checked ? ' filter-checkbox--active' : ''}`}
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`filter-genre-${genre.genre_id}`}
+                  checked={checked}
+                  onChange={() => toggleGenre(genre.genre_id)}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`filter-genre-${genre.genre_id}`}
+                >
+                  {genre.genre_name}
+                </label>
+              </div>
+            );
+          })}
         </div>
         <h5>Rankings</h5>
         <div className="filter-options">
-          {rankings.map((ranking) => (
-            <label
-              key={ranking}
-              className={`filter-checkbox${selectedRankings.includes(ranking) ? ' filter-checkbox--active' : ''}`}
-            >
-              <input
-                type="checkbox"
-                checked={selectedRankings.includes(ranking)}
-                onChange={() => toggleRanking(ranking)}
-              />
-              {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
-            </label>
-          ))}
+          {rankings.map((ranking) => {
+            const checked = selectedRankings.includes(ranking);
+            return (
+              <div
+                key={ranking}
+                className={`filter-checkbox form-check${checked ? ' filter-checkbox--active' : ''}`}
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id={`filter-ranking-${ranking}`}
+                  checked={checked}
+                  onChange={() => toggleRanking(ranking)}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor={`filter-ranking-${ranking}`}
+                >
+                  {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
+                </label>
+              </div>
+            );
+          })}
         </div>
         <button className="apply-btn" onClick={onApplyFilters}>
           <span role="img" aria-label="search">🔍</span>

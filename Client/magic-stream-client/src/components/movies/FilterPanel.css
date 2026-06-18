@@ -116,3 +116,26 @@
 .apply-btn:hover {
   background: #0b5ed7;
 }
+
+/* Stronger, more specific overrides to ensure active state is visible above Bootstrap */
+.filter-panel-content .filter-checkbox.filter-checkbox--active {
+  border-color: #0d6efd;
+  background: #0d6efd;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25);
+  transform: translateY(-1px);
+}
+
+.filter-panel-content .filter-checkbox.filter-checkbox--active .form-check-label {
+  color: #fff;
+}
+
+/* Make the native checkbox tick visible on dark background in modern browsers */
+.filter-panel-content .filter-checkbox.filter-checkbox--active .form-check-input {
+  accent-color: #fff;
+}
+
+/* Fallback: ensure label text gets highest priority */
+.filter-panel-content .filter-checkbox.filter-checkbox--active .form-check-label {
+  color: #fff !important;
+}

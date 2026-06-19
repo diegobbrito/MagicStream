@@ -30,17 +30,15 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
             return (
               <div
                 key={genre.genre_id}
-                className={`filter-checkbox form-check${checked ? ' filter-checkbox--active' : ''}`}
+                className={`filter-checkbox ${checked ? 'filter-checkbox--active' : ''}`}
               >
                 <input
-                  className="form-check-input"
                   type="checkbox"
                   id={`filter-genre-${genre.genre_id}`}
                   checked={checked}
                   onChange={() => toggleGenre(genre.genre_id)}
                 />
                 <label
-                  className="form-check-label"
                   htmlFor={`filter-genre-${genre.genre_id}`}
                 >
                   {genre.genre_name}
@@ -56,17 +54,15 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
             return (
               <div
                 key={ranking}
-                className={`filter-checkbox form-check${checked ? ' filter-checkbox--active' : ''}`}
+                className={`filter-checkbox ${checked ? 'filter-checkbox--active' : ''}`}
               >
                 <input
-                  className="form-check-input"
                   type="checkbox"
                   id={`filter-ranking-${ranking}`}
                   checked={checked}
                   onChange={() => toggleRanking(ranking)}
                 />
                 <label
-                  className="form-check-label"
                   htmlFor={`filter-ranking-${ranking}`}
                 >
                   {ranking === 'Not_Rated' ? 'Not Rated' : ranking}

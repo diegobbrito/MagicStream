@@ -3,20 +3,20 @@ import React from 'react';
 const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, selectedRankings, setSelectedRankings, onApplyFilters, onClose }) => {
   // Toggle genre selection
   const toggleGenre = (genreId) => {
-    setSelectedGenres((prev) =>
-      prev.includes(genreId)
-        ? prev.filter((id) => id !== genreId)
-        : [...prev, genreId]
-    );
+    const prev = Array.isArray(selectedGenres) ? selectedGenres : [];
+    const next = prev.includes(genreId)
+      ? prev.filter((id) => id !== genreId)
+      : [...prev, genreId];
+    setSelectedGenres(next);
   };
 
   // Toggle ranking selection
   const toggleRanking = (ranking) => {
-    setSelectedRankings((prev) =>
-      prev.includes(ranking)
-        ? prev.filter((rk) => rk !== ranking)
-        : [...prev, ranking]
-    );
+    const prev = Array.isArray(selectedRankings) ? selectedRankings : [];
+    const next = prev.includes(ranking)
+      ? prev.filter((rk) => rk !== ranking)
+      : [...prev, ranking];
+    setSelectedRankings(next);
   };
 
   return (
@@ -35,11 +35,13 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
                 <input
                   type="checkbox"
                   id={`filter-genre-${genre.genre_id}`}
+                  className="form-check-input"
                   checked={checked}
                   onChange={() => toggleGenre(genre.genre_id)}
                 />
                 <label
                   htmlFor={`filter-genre-${genre.genre_id}`}
+                  className="form-check-label"
                 >
                   {genre.genre_name}
                 </label>
@@ -59,11 +61,13 @@ const FilterPanel = ({ genres, rankings, selectedGenres, setSelectedGenres, sele
                 <input
                   type="checkbox"
                   id={`filter-ranking-${ranking}`}
+                  className="form-check-input"
                   checked={checked}
                   onChange={() => toggleRanking(ranking)}
                 />
                 <label
                   htmlFor={`filter-ranking-${ranking}`}
+                  className="form-check-label"
                 >
                   {ranking === 'Not_Rated' ? 'Not Rated' : ranking}
                 </label>

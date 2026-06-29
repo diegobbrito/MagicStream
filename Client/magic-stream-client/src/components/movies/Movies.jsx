@@ -22,7 +22,8 @@ const Movies = ({
     setSelectedRankings,
     searchTerm,
     setSearchTerm,
-    onApplyFilters
+    onApplyFilters,
+    showFilters = true
 }) => {
 
 
@@ -32,31 +33,33 @@ const Movies = ({
     return (
         <div className='container'>
             {}
-            <div className='row mb-4 align-items-end'>
-                <div className='col-md-10 mb-2'>
-                    <label htmlFor='search-bar' className='form-label visually-hidden'>Search by name</label>
-                    <input
-                        id='search-bar'
-                        className='form-control'
-                        type='text'
-                        placeholder='Search movie by name...'
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        style={{ minWidth: 180 }}
-                    />
+            {showFilters && (
+                <div className='row mb-4 align-items-end'>
+                    <div className='col-md-10 mb-2'>
+                        <label htmlFor='search-bar' className='form-label visually-hidden'>Search by name</label>
+                        <input
+                            id='search-bar'
+                            className='form-control'
+                            type='text'
+                            placeholder='Search movie by name...'
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            style={{ minWidth: 180 }}
+                        />
+                    </div>
+                    <div className='col-md-2 mb-2 d-flex justify-content-end'>
+                        <button
+                            className='btn btn-outline-secondary'
+                            style={{ fontSize: '1.5rem', padding: '0.3rem 0.7rem' }}
+                            title='Filter options'
+                            onClick={() => setShowFilter(true)}
+                        >
+                            <span role="img" aria-label="filter">🔎</span>
+                        </button>
+                    </div>
                 </div>
-                <div className='col-md-2 mb-2 d-flex justify-content-end'>
-                    <button
-                        className='btn btn-outline-secondary'
-                        style={{ fontSize: '1.5rem', padding: '0.3rem 0.7rem' }}
-                        title='Filter options'
-                        onClick={() => setShowFilter(true)}
-                    >
-                        <span role="img" aria-label="filter">🔎</span>
-                    </button>
-                </div>
-            </div>
-            {showFilter && (
+            )}
+            {showFilters && showFilter && (
                 <FilterPanel
                     genres={genres}
                     rankings={rankings}

@@ -1,6 +1,5 @@
 import useAxiosPrivate from "../../hook/useAxiosPrivate";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Movies from "../movies/Movies";
 
 const Recommended = () => {
@@ -8,7 +7,6 @@ const Recommended = () => {
    const [loading, setLoading] = useState(false);
    const [message, setMessage] = useState();
    const axiosPrivate = useAxiosPrivate();
-   const navigate = useNavigate();
 
    useEffect(() => {
     const fetchRecommendedMovies = async () => {
@@ -35,7 +33,7 @@ const Recommended = () => {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
                     <h2>Loading recommendations...</h2>
                 </div>
-            ) : <Movies movies={movies} message={message} />}
+            ) : <Movies movies={movies} message={message} showFilters={false} />}
         </>
     )
 }
